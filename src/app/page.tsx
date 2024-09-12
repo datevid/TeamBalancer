@@ -27,8 +27,9 @@ export default function Home() {
           <Card>
             <CardHeader>
               <CardTitle className="text-center">
-                <span className="inline-block w-12 h-12 rounded-full bg-orange-400 text-white text-2xl font-bold leading-12 mb-2">1</span>
-                <br />Generar
+                <span
+                    className="inline-block w-12 h-12 rounded-full bg-orange-400 text-white text-2xl font-bold leading-12 mb-2">1</span>
+                <br/>Generar
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -42,8 +43,9 @@ export default function Home() {
           <Card>
             <CardHeader>
               <CardTitle className="text-center">
-                <span className="inline-block w-12 h-12 rounded-full bg-orange-400 text-white text-2xl font-bold leading-12 mb-2">2</span>
-                <br />Balancear
+                <span
+                    className="inline-block w-12 h-12 rounded-full bg-orange-400 text-white text-2xl font-bold leading-12 mb-2">2</span>
+                <br/>Balancear
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -57,8 +59,9 @@ export default function Home() {
           <Card>
             <CardHeader>
               <CardTitle className="text-center">
-                <span className="inline-block w-12 h-12 rounded-full bg-orange-400 text-white text-2xl font-bold leading-12 mb-2">3</span>
-                <br />Revisar
+                <span
+                    className="inline-block w-12 h-12 rounded-full bg-orange-400 text-white text-2xl font-bold leading-12 mb-2">3</span>
+                <br/>Revisar
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -90,7 +93,8 @@ export default function Home() {
             <CardTitle>Algoritmo de distribución de jugadores</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="mb-4">Nuestro algoritmo de balanceo utiliza un enfoque de suma de diferencias mínimas para crear equipos equilibrados:</p>
+            <p className="mb-4">Nuestro algoritmo de balanceo utiliza un enfoque de suma de diferencias mínimas para
+              crear equipos equilibrados:</p>
             <ol className="list-decimal list-inside space-y-2">
               <li>Ordena a los jugadores por rendimiento de mayor a menor.</li>
               <li>Inicializa los equipos vacíos.</li>
@@ -103,7 +107,8 @@ export default function Home() {
               </li>
               <li>Repite hasta que todos los jugadores estén asignados.</li>
             </ol>
-            <p className="mt-4">Este método asegura una distribución equilibrada de jugadores, considerando tanto los jugadores de alto rendimiento como los de bajo rendimiento.</p>
+            <p className="mt-4">Este método asegura una distribución equilibrada de jugadores, considerando tanto los
+              jugadores de alto rendimiento como los de bajo rendimiento.</p>
           </CardContent>
         </Card>
 
@@ -128,6 +133,14 @@ export default function Home() {
         <Link href="/team-balancer">
           <Button className="block mx-auto mt-4">Crear Equipos</Button>
         </Link>
+
+        <footer className="bg-gray-100 py-4 mt-8">
+          <div className="text-center text-sm text-gray-600">
+            Por <a href="https://twitter.com/datevid" className="text-blue-500 hover:underline" target="_blank"
+                          rel="noopener noreferrer">@datevid</a>, inspirado en ideas aportadas por el club Tikaz
+          </div>
+        </footer>
+
       </div>
   );
 }

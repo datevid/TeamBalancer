@@ -103,12 +103,12 @@ const TeamBalancer: React.FC = () => {
             <div className="flex justify-between items-center mb-4">
                 <h1 className="text-2xl font-bold">Generador de Equipos Balanceados</h1>
                 <div className="flex items-center space-x-2">
-                    <Sun className="h-4 w-4" />
+                    <Sun className="h-4 w-4"/>
                     <Switch
                         checked={isDarkMode}
                         onCheckedChange={setIsDarkMode}
                     />
-                    <Moon className="h-4 w-4" />
+                    <Moon className="h-4 w-4"/>
                 </div>
             </div>
 
@@ -117,20 +117,20 @@ const TeamBalancer: React.FC = () => {
                     type="text"
                     placeholder="Nombre del jugador"
                     value={newPlayer.name}
-                    onChange={(e) => setNewPlayer({ ...newPlayer, name: e.target.value })}
+                    onChange={(e) => setNewPlayer({...newPlayer, name: e.target.value})}
                 />
                 <Input
                     type="number"
                     placeholder="Rendimiento (1-10)"
                     value={newPlayer.performance || ''}
-                    onChange={(e) => setNewPlayer({ ...newPlayer, performance: parseFloat(e.target.value) || 0 })}
+                    onChange={(e) => setNewPlayer({...newPlayer, performance: parseFloat(e.target.value) || 0})}
                     min="1"
                     max="10"
                     step="0.1"
                 />
                 <Button onClick={addPlayer}>Añadir Jugador</Button>
                 <Button onClick={toggleBulkInput}>
-                    <Clipboard className="h-4 w-4 mr-2" />
+                    <Clipboard className="h-4 w-4 mr-2"/>
                     Carga Masiva
                 </Button>
                 <Button onClick={generateRandomPlayers}>Demo</Button>
@@ -195,7 +195,7 @@ const TeamBalancer: React.FC = () => {
                                         size="icon"
                                         onClick={() => removePlayer(index)}
                                     >
-                                        <Trash2 className="h-4 w-4" />
+                                        <Trash2 className="h-4 w-4"/>
                                     </Button>
                                 </li>
                             ))}
@@ -224,6 +224,13 @@ const TeamBalancer: React.FC = () => {
                     </CardContent>
                 </Card>
             </div>
+            <footer className="bg-gray-100 py-4 mt-8">
+                <div className="text-center text-sm text-gray-600">
+                    Por <a href="https://twitter.com/datevid" className="text-blue-500 hover:underline"
+                                  target="_blank"
+                                  rel="noopener noreferrer">@datevid</a>, inspirado en ideas aportadas por el club Tikaz
+                </div>
+            </footer>
         </div>
     );
 };
