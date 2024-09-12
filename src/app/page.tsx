@@ -79,7 +79,7 @@ export default function Home() {
               <li>Ingresa los nombres de los jugadores y sus puntuaciones de rendimiento (1-10).</li>
               <li>Utiliza la función de carga masiva para ingresar múltiples jugadores a la vez si lo prefieres.</li>
               <li>Especifica el número de equipos que deseas formar.</li>
-              <li>Haz clic en "Generar Equipos" para crear equipos equilibrados.</li>
+              <li>Haz clic en Generar Equipos para crear equipos equilibrados.</li>
               <li>Revisa los equipos generados y sus puntuaciones totales.</li>
             </ol>
           </CardContent>
@@ -90,7 +90,7 @@ export default function Home() {
             <CardTitle>Algoritmo de distribución de jugadores</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="mb-4">Nuestro algoritmo de balanceo utiliza un enfoque de "suma de diferencias mínimas" para crear equipos equilibrados:</p>
+            <p className="mb-4">Nuestro algoritmo de balanceo utiliza un enfoque de suma de diferencias mínimas para crear equipos equilibrados:</p>
             <ol className="list-decimal list-inside space-y-2">
               <li>Ordena a los jugadores por rendimiento de mayor a menor.</li>
               <li>Inicializa los equipos vacíos.</li>
