@@ -51,7 +51,7 @@ const TeamBalancer: React.FC = () => {
         const exampleNames = ['Juan', 'María', 'Pedro', 'Ana', 'Luis', 'Carla', 'Diego', 'Sofía', 'Miguel', 'Laura'];
         const randomPlayers: Player[] = exampleNames.map(name => ({
             name,
-            performance: parseFloat((Math.random() * (7 - 4) + 4).toFixed(1))
+            performance: Math.floor(Math.random() * (7 - 4 + 1) + 4) // Genera un número entero entre 4 y 7
         }));
         setPlayers(randomPlayers);
     };
