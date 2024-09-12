@@ -4,8 +4,9 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Trash2, Moon, Sun } from 'lucide-react';
+import { Trash2, Moon, Sun, Clipboard } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
+import { Textarea } from '@/components/ui/textarea';
 
 interface Player {
     name: string;
@@ -23,6 +24,9 @@ const TeamBalancer: React.FC = () => {
     const [teams, setTeams] = useState<Team[]>([]);
     const [numTeams, setNumTeams] = useState<number>(2);
     const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+    const [showBulkInput, setShowBulkInput] = useState<boolean>(false);
+    const [bulkNames, setBulkNames] = useState<string>('');
+    const [bulkPerformances, setBulkPerformances] = useState<string>('');
 
     useEffect(() => {
         if (isDarkMode) {
@@ -43,13 +47,6 @@ const TeamBalancer: React.FC = () => {
         setPlayers(players.filter((_, i) => i !== index));
     };
 
-    /*const generateRandomPlayers = () => {
-        const randomPlayers: Player[] = Array.from({ length: 10 }, (_, index) => ({
-            name: `Jugador ${index + 1}`,
-            performance: parseFloat((Math.random() * (7 - 4) + 4).toFixed(1))
-        }));
-        setPlayers(randomPlayers);
-    };*/
     const generateRandomPlayers = () => {
         const exampleNames = ['Juan', 'María', 'Pedro', 'Ana', 'Luis', 'Carla', 'Diego', 'Sofía', 'Miguel', 'Laura'];
         const randomPlayers: Player[] = exampleNames.map(name => ({
@@ -63,17 +60,42 @@ const TeamBalancer: React.FC = () => {
         const sortedPlayers = [...players].sort((a, b) => b.performance - a.performance);
         const newTeams: Team[] = Array.from({ length: numTeams }, () => ({ players: [], totalPerformance: 0 }));
 
-        sortedPlayers.forEach((player, index) => {
-            const teamIndex = index % numTeams;
-            newTeams[teamIndex].players.push(player);
-            newTeams[teamIndex].totalPerformance += player.performance;
+        sortedPlayers.forEach((player) => {
+            // Find the team with the lowest total performance
+            const teamToAddTo = newTeams.reduce((minTeam, currentTeam) =>
+                currentTeam.totalPerformance < minTeam.totalPerformance ? currentTeam : minTeam
+            );
+
+            // Add the player to the team with the lowest total performance
+            teamToAddTo.players.push(player);
+            teamToAddTo.totalPerformance += player.performance;
         });
 
+        // Round total performances
         newTeams.forEach(team => {
             team.totalPerformance = parseFloat(team.totalPerformance.toFixed(2));
         });
 
         setTeams(newTeams);
+    };
+
+    const toggleBulkInput = () => {
+        setShowBulkInput(!showBulkInput);
+    };
+
+    const processBulkInput = () => {
+        const names = bulkNames.split('\n').filter(name => name.trim() !== '');
+        const performances = bulkPerformances.split('\n').filter(perf => perf.trim() !== '');
+
+        const newPlayers = names.map((name, index) => ({
+            name: name.trim(),
+            performance: parseFloat(performances[index]) || 0
+        }));
+
+        setPlayers([...players, ...newPlayers]);
+        setBulkNames('');
+        setBulkPerformances('');
+        setShowBulkInput(false);
     };
 
     return (
@@ -107,8 +129,44 @@ const TeamBalancer: React.FC = () => {
                     step="0.1"
                 />
                 <Button onClick={addPlayer}>Añadir Jugador</Button>
+                <Button onClick={toggleBulkInput}>
+                    <Clipboard className="h-4 w-4 mr-2" />
+                    Carga Masiva
+                </Button>
                 <Button onClick={generateRandomPlayers}>Demo</Button>
             </div>
+
+            {showBulkInput && (
+                <div className="mb-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label htmlFor="bulkNames" className="block mb-2 text-sm font-medium">
+                                Nombres de jugadores (uno por línea)
+                            </label>
+                            <Textarea
+                                id="bulkNames"
+                                placeholder="Juan&#10;María&#10;Pedro"
+                                value={bulkNames}
+                                onChange={(e) => setBulkNames(e.target.value)}
+                                rows={5}
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="bulkPerformances" className="block mb-2 text-sm font-medium">
+                                Rendimientos (uno por línea)
+                            </label>
+                            <Textarea
+                                id="bulkPerformances"
+                                placeholder="7.5&#10;8.2&#10;6.9"
+                                value={bulkPerformances}
+                                onChange={(e) => setBulkPerformances(e.target.value)}
+                                rows={5}
+                            />
+                        </div>
+                    </div>
+                    <Button onClick={processBulkInput} className="mt-2">Procesar Carga Masiva</Button>
+                </div>
+            )}
 
             <div className="flex flex-col sm:flex-row gap-2 mb-4">
                 <Input
