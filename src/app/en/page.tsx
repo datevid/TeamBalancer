@@ -98,7 +98,7 @@ export default function Home() {
                             <ul className="list-disc list-inside ml-4 mt-2">
                                 <li>Identify the team with the lowest current total performance.</li>
                                 <li>Assign the player to that team.</li>
-                                <li>Update the team's total performance.</li>
+                                <li>Update the teams total performance.</li>
                             </ul>
                         </li>
                         <li>Repeat until all players are assigned.</li>
