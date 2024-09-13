@@ -8,6 +8,7 @@ import { Trash2, Moon, Sun, Clipboard, Star } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import Link from "next/link";
 
 interface Player {
     name: string;
@@ -109,13 +110,18 @@ const TeamBalancer: React.FC = () => {
         <div className="p-4 max-w-4xl mx-auto">
             <div className="flex justify-between items-center mb-4">
                 <h1 className="text-2xl font-bold">Balanced Team Generator</h1>
-                <div className="flex items-center space-x-2">
-                    <Sun className="h-4 w-4"/>
-                    <Switch
-                        checked={isDarkMode}
-                        onCheckedChange={setIsDarkMode}
-                    />
-                    <Moon className="h-4 w-4"/>
+                <div className="flex items-center space-x-4">
+                    <Link href="/balanceador" className="text-primary hover:underline">
+                        Versión en Español
+                    </Link>
+                    <div className="flex items-center space-x-2">
+                        <Sun className="h-4 w-4"/>
+                        <Switch
+                            checked={isDarkMode}
+                            onCheckedChange={setIsDarkMode}
+                        />
+                        <Moon className="h-4 w-4"/>
+                    </div>
                 </div>
             </div>
 
@@ -131,7 +137,7 @@ const TeamBalancer: React.FC = () => {
                     onValueChange={(value) => setNewPlayer({...newPlayer, performance: parseFloat(value)})}
                 >
                     <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder="Performance" />
+                        <SelectValue placeholder="Performance"/>
                     </SelectTrigger>
                     <SelectContent>
                         {[1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5].map((value) => (
@@ -228,7 +234,8 @@ const TeamBalancer: React.FC = () => {
                             {teams.map((team, index) => (
                                 <div key={index}>
                                     <h3 className="font-bold">Team {index + 1}</h3>
-                                    <p className="text-sm mb-2">Total Performance: {team.totalPerformance.toFixed(1)}</p>
+                                    <p className="text-sm mb-2">Total
+                                        Performance: {team.totalPerformance.toFixed(1)}</p>
                                     <ul>
                                         {team.players.map((player, playerIndex) => (
                                             <li key={playerIndex}>
