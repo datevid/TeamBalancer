@@ -15,7 +15,7 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: "TeamBalancer - Equilibra tus equipos",
-  description: "Una aplicación que genera equipos balanceados",
+  description: "una herramienta de balancea de equipos",
 };
 
 export default function RootLayout({
