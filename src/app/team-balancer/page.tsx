@@ -108,7 +108,7 @@ const TeamBalancer: React.FC = () => {
     return (
         <div className="p-4 max-w-4xl mx-auto">
             <div className="flex justify-between items-center mb-4">
-                <h1 className="text-2xl font-bold">Generador de Equipos Balanceados</h1>
+                <h1 className="text-2xl font-bold">Balanced Team Generator</h1>
                 <div className="flex items-center space-x-2">
                     <Sun className="h-4 w-4"/>
                     <Switch
@@ -122,7 +122,7 @@ const TeamBalancer: React.FC = () => {
             <div className="flex flex-col sm:flex-row gap-2 mb-4">
                 <Input
                     type="text"
-                    placeholder="Nombre del jugador"
+                    placeholder="Player name"
                     value={newPlayer.name}
                     onChange={(e) => setNewPlayer({...newPlayer, name: e.target.value})}
                 />
@@ -131,7 +131,7 @@ const TeamBalancer: React.FC = () => {
                     onValueChange={(value) => setNewPlayer({...newPlayer, performance: parseFloat(value)})}
                 >
                     <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder="Rendimiento" />
+                        <SelectValue placeholder="Performance" />
                     </SelectTrigger>
                     <SelectContent>
                         {[1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5].map((value) => (
@@ -144,10 +144,10 @@ const TeamBalancer: React.FC = () => {
                         ))}
                     </SelectContent>
                 </Select>
-                <Button onClick={addPlayer}>Añadir Jugador</Button>
+                <Button onClick={addPlayer}>Add Player</Button>
                 <Button onClick={toggleBulkInput}>
                     <Clipboard className="h-4 w-4 mr-2"/>
-                    Carga Masiva
+                    Bulk Add
                 </Button>
                 <Button onClick={generateRandomPlayers}>Demo</Button>
             </div>
@@ -157,11 +157,11 @@ const TeamBalancer: React.FC = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label htmlFor="bulkNames" className="block mb-2 text-sm font-medium">
-                                Nombres de jugadores (uno por línea)
+                                Player names (one per line)
                             </label>
                             <Textarea
                                 id="bulkNames"
-                                placeholder="Juan&#10;María&#10;Pedro"
+                                placeholder="John&#10;Mary&#10;Peter"
                                 value={bulkNames}
                                 onChange={(e) => setBulkNames(e.target.value)}
                                 rows={5}
@@ -169,7 +169,7 @@ const TeamBalancer: React.FC = () => {
                         </div>
                         <div>
                             <label htmlFor="bulkPerformances" className="block mb-2 text-sm font-medium">
-                                Rendimientos (uno por línea, 1.0-5.0)
+                                Performances (one per line, 1.0-5.0)
                             </label>
                             <Textarea
                                 id="bulkPerformances"
@@ -180,26 +180,26 @@ const TeamBalancer: React.FC = () => {
                             />
                         </div>
                     </div>
-                    <Button onClick={processBulkInput} className="mt-2">Procesar Carga Masiva</Button>
+                    <Button onClick={processBulkInput} className="mt-2">Process Bulk Input</Button>
                 </div>
             )}
 
             <div className="flex flex-col sm:flex-row gap-2 mb-4">
                 <Input
                     type="number"
-                    placeholder="Número de equipos"
+                    placeholder="Number of teams"
                     value={numTeams}
                     onChange={(e) => setNumTeams(Math.max(2, parseInt(e.target.value) || 2))}
                     min="2"
                     className="w-full sm:w-auto"
                 />
-                <Button onClick={balanceTeams} disabled={players.length < numTeams}>Generar Equipos</Button>
+                <Button onClick={balanceTeams} disabled={players.length < numTeams}>Generate Teams</Button>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <Card>
                     <CardHeader>
-                        <CardTitle>Jugadores</CardTitle>
+                        <CardTitle>Players</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <ul>
@@ -221,14 +221,14 @@ const TeamBalancer: React.FC = () => {
 
                 <Card>
                     <CardHeader>
-                        <CardTitle>Equipos Balanceados</CardTitle>
+                        <CardTitle>Balanced Teams</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             {teams.map((team, index) => (
                                 <div key={index}>
-                                    <h3 className="font-bold">Equipo {index + 1}</h3>
-                                    <p className="text-sm mb-2">Rendimiento total: {team.totalPerformance.toFixed(1)}</p>
+                                    <h3 className="font-bold">Team {index + 1}</h3>
+                                    <p className="text-sm mb-2">Total Performance: {team.totalPerformance.toFixed(1)}</p>
                                     <ul>
                                         {team.players.map((player, playerIndex) => (
                                             <li key={playerIndex}>
@@ -244,9 +244,9 @@ const TeamBalancer: React.FC = () => {
             </div>
             <footer className="py-4 mt-8 bg-secondary text-secondary-foreground">
                 <div className="text-center text-sm">
-                    Por <a href="https://twitter.com/datevid" className="text-primary hover:underline"
-                           target="_blank"
-                           rel="noopener noreferrer">@datevid</a>, inspirado en ideas aportadas por el club Tikaz
+                    By <a href="https://twitter.com/datevid" className="text-primary hover:underline"
+                          target="_blank"
+                          rel="noopener noreferrer">@datevid</a>, inspired by ideas from the Tikaz club
                 </div>
             </footer>
         </div>
