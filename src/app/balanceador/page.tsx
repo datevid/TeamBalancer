@@ -85,19 +85,33 @@ const TeamBalancer: React.FC = () => {
         setShowBulkInput(!showBulkInput);
     };
 
+    //valida de la carga masiva si el peso del jugador está en el rango de 1-5
+    const isValidPerformance = (value: number): boolean => {
+        return value >= 1.0 && value <= 5.0 && Number.isFinite(value);
+    };
+
     const processBulkInput = () => {
         const names = bulkNames.split('\n').filter(name => name.trim() !== '');
         const performances = bulkPerformances.split('\n').filter(perf => perf.trim() !== '');
 
-        const newPlayers = names.map((name, index) => ({
-            name: name.trim(),
-            performance: parseFloat(performances[index]) || 0
-        }));
+        const newPlayers = names.map((name, index) => {
+            const performance = parseFloat(performances[index]);
+            return {
+                name: name.trim(),
+                performance: isValidPerformance(performance) ? performance : 0
+            };
+        }).filter(player => player.performance !== 0);
 
         setPlayers([...players, ...newPlayers]);
         setBulkNames('');
         setBulkPerformances('');
         setShowBulkInput(false);
+
+        // Optionally, you can add feedback to the user about invalid entries
+        const invalidCount = names.length - newPlayers.length;
+        if (invalidCount > 0) {
+            alert(`${invalidCount} player(s) were skipped due to invalid performance values. Only values between 1.0 and 5.0 are accepted.`);
+        }
     };
 
     const renderStars = (performance: number) => {
@@ -111,7 +125,7 @@ const TeamBalancer: React.FC = () => {
             <div className="flex justify-between items-center mb-4">
                 <h1 className="text-2xl font-bold">Generador de Equipos Balanceados</h1>
                 <div className="flex items-center space-x-4">
-                    <Link href="/team-balancer" className="text-primary hover:underline">
+                    <Link href="/balancer" className="text-primary hover:underline">
                         English version
                     </Link>
                     <div className="flex items-center space-x-2">
