@@ -130,7 +130,7 @@ export default function Home() {
           ¿Listo para crear equipos equilibrados? ¡Haz clic en el botón Crear Equipos y comienza ahora!
         </p>
 
-        <Link href="/team-balancer">
+        <Link href="/balanceador">
           <Button className="block mx-auto mt-4">Crear Equipos</Button>
         </Link>
 

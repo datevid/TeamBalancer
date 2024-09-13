@@ -14,7 +14,7 @@ const HomePage: React.FC = () =>
                 Sin sesgo, solo equipos justos y balanceados.
             </p>
 
-            <Link href="/team-balancer">
+            <Link href="/balanceador">
                 <Button className="block mx-auto mb-12">Crear Equipos</Button>
             </Link>
 
