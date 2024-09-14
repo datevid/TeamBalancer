@@ -4,11 +4,12 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Trash2, Moon, Sun, Clipboard, Star } from 'lucide-react';
+import {Trash2, Moon, Sun, Clipboard, Star, Check, Edit2,X} from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import Link from "next/link";
+import {useToast} from "@/hooks/use-toast";
 
 interface Player {
     name: string;
@@ -29,6 +30,9 @@ const TeamBalancer: React.FC = () => {
     const [showBulkInput, setShowBulkInput] = useState<boolean>(false);
     const [bulkNames, setBulkNames] = useState<string>('');
     const [bulkPerformances, setBulkPerformances] = useState<string>('');
+    const [editingIndex, setEditingIndex] = useState<number | null>(null);
+    const [editingPlayer, setEditingPlayer] = useState<Player>({ name: '', performance: 0 });
+    const { toast } = useToast()
 
     useEffect(() => {
         if (isDarkMode) {
@@ -47,6 +51,46 @@ const TeamBalancer: React.FC = () => {
 
     const removePlayer = (index: number) => {
         setPlayers(players.filter((_, i) => i !== index));
+    };
+
+    const startEditing = (index: number) => {
+        setEditingIndex(index);
+        setEditingPlayer({ ...players[index] });
+    };
+
+    const saveEdit = () => {
+        if (editingIndex !== null) {
+            const newPlayers = [...players];
+            newPlayers[editingIndex] = { ...editingPlayer, performance: parseFloat(editingPlayer.performance.toFixed(1)) };
+            setPlayers(newPlayers);
+            setEditingIndex(null);
+        }
+    };
+
+    const cancelEdit = () => {
+        setEditingIndex(null);
+    };
+
+    const copyTeamsToClipboard = () => {
+
+        const teamsText = teams.map((team, index) => {
+            const playersText = team.players.map(player => `${player.name}: ${player.performance.toFixed(1)}`).join('\n');
+            return `Team ${index + 1} (Total Performance: ${team.totalPerformance.toFixed(1)}):\n${playersText}`;
+        }).join('\n\n');
+
+        navigator.clipboard.writeText(teamsText).then(() => {
+            toast({
+                title: "Copied to clipboard",
+                description: "Teams have been copied to your clipboard.",
+            });
+        }).catch(err => {
+            console.error('Failed to copy: ', err);
+            toast({
+                title: "Copy failed",
+                description: "Unable to copy teams to clipboard.",
+                variant: "destructive",
+            });
+        });
     };
 
     const generateRandomPlayers = () => {
@@ -225,14 +269,57 @@ const TeamBalancer: React.FC = () => {
                         <ul>
                             {players.map((player, index) => (
                                 <li key={index} className="flex justify-between items-center mb-2">
-                                    <span>{player.name}: {player.performance.toFixed(1)}</span>
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        onClick={() => removePlayer(index)}
-                                    >
-                                        <Trash2 className="h-4 w-4"/>
-                                    </Button>
+                                    {editingIndex === index ? (
+                                        <>
+                                            <Input
+                                                value={editingPlayer.name}
+                                                onChange={(e) => setEditingPlayer({
+                                                    ...editingPlayer,
+                                                    name: e.target.value
+                                                })}
+                                                className="w-1/3 mr-2"
+                                            />
+                                            <Select
+                                                value={editingPlayer.performance.toString()}
+                                                onValueChange={(value) => setEditingPlayer({
+                                                    ...editingPlayer,
+                                                    performance: parseFloat(value)
+                                                })}
+                                            >
+                                                <SelectTrigger className="w-1/3">
+                                                    <SelectValue placeholder="Performance"/>
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {[1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5].map((value) => (
+                                                        <SelectItem key={value} value={value.toString()}>
+                                                            <div className="flex items-center">
+                                                                {renderStars(Math.floor(value))}
+                                                                <span className="ml-2">{value.toFixed(1)}</span>
+                                                            </div>
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                            <Button variant="ghost" size="icon" onClick={saveEdit}>
+                                                <Check className="h-4 w-4"/>
+                                            </Button>
+                                            <Button variant="ghost" size="icon" onClick={cancelEdit}>
+                                                <X className="h-4 w-4"/>
+                                            </Button>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <span>{player.name}: {player.performance.toFixed(1)}</span>
+                                            <div>
+                                                <Button variant="ghost" size="icon" onClick={() => startEditing(index)}>
+                                                    <Edit2 className="h-4 w-4"/>
+                                                </Button>
+                                                <Button variant="ghost" size="icon" onClick={() => removePlayer(index)}>
+                                                    <Trash2 className="h-4 w-4"/>
+                                                </Button>
+                                            </div>
+                                        </>
+                                    )}
                                 </li>
                             ))}
                         </ul>
@@ -241,7 +328,13 @@ const TeamBalancer: React.FC = () => {
 
                 <Card>
                     <CardHeader>
-                        <CardTitle>Balanced Teams</CardTitle>
+                        <CardTitle className="flex justify-between items-center">
+                            Balanced Teams
+                            <Button variant="outline" size="sm" onClick={copyTeamsToClipboard}>
+                                <Clipboard className="h-4 w-4 mr-2"/>
+                                Copy Teams
+                            </Button>
+                        </CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
